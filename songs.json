@@ -67,10 +67,10 @@
       "thumbnail": "./Assets/Thumbnails/MeriAashiqui.png"
     },
     {
-      "name": "",
-      "singer": "",
-      "file": "./Assets/Songs/",
-      "thumbnail": "./Assets/Thumbnails"
+      "name": "Pyaar Tune Kya Kiya",
+      "singer": "Jubin Nautiyal",
+      "file": "./Assets/Songs/Pyaar Tune Kya Kiya - -(MastiMusic.Com).mp3",
+      "thumbnail": "./Assets/Thumbnails/PyarTune.png"
     }
   ]
 }
