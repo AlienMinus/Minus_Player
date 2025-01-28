@@ -1,0 +1,76 @@
+{
+  "songs": [
+    {
+      "name": "Aashiqui (The Love Theme)",
+      "singer": "Arijit Singh",
+      "file": "./Assets/Songs/Aashiqui (The Love Theme)(MP3_320K).mp3",
+      "thumbnail": "./Assets/Thumbnails/Aashiqui.png"
+    },
+    {
+      "name": "Aapke Pyaar Mein",
+      "singer": "Vishal Mishra",
+      "file": "./Assets/Songs/Aapke pyar me hum savarne lage. - Vishal Mishra _Alka yagnik(MP3_320K).mp3",
+      "thumbnail": "./Assets/Thumbnails/Aapke.png"
+    },
+    {
+      "name": "Baarishon Mein",
+      "singer": "Darshan Raval",
+      "file": "./Assets/Songs/_DarshanRavalDZ _ Baarishon Mein _ Malvika Sharma _ Official Video _ New Song 2022(MP3_320K).mp3",
+      "thumbnail": "./Assets/Thumbnails/Baarishon.png"
+    },
+    {
+      "name": "Khairiyat",
+      "singer": "Arijit Singh",
+      "file": "./Assets/Songs/Khairiyat Sad - Chhichhore.mp3",
+      "thumbnail": "./Assets/Thumbnails/Khairiyat.png"
+    },
+    {
+      "name": "Ae Dil Hai Mushkil",
+      "singer": "Arijit Singh",
+      "file": "./Assets/Songs/05 Ae Dil Hai Mushkil Title Track - Arijit Singh 190Kbps.mp3",
+      "thumbnail": "./Assets/Thumbnails/ADHM.png"
+    },
+    {
+      "name": "Baarish Ban Jana",
+      "singer": "Stebin Ben",
+      "file": "./Assets/Songs/Baarish Ban Jana - Stebin Ben.mp3",
+      "thumbnail": "./Assets/Thumbnails/BaarishBanJana.png"
+    },
+    {
+      "name": "Baarish (Yaariyan)",
+      "singer": "Mohammad Irfaan",
+      "file": "./Assets/Songs/Baarish (Yaariyan) [PagalWorld.com] - 320Kbps.mp3",
+      "thumbnail": "./Assets/Thumbnails/BaarishYaariyaan.png"
+    },
+    {
+      "name": "Barsaat Ki Dhun",
+      "singer": "Jubin Nautiyal",
+      "file": "./Assets/Songs/Barsaat Ki Dhun - Jubin Nautiyal 320 Kbps.mp3",
+      "thumbnail": "./Assets/Thumbnails/BarsaatKiDhun.png"
+    },
+    {
+      "name": "Mujhko Barsaat Bana Lo",
+      "singer": "Armaan Malik",
+      "file": "./Assets/Songs/Mujhko Barsaat Bana Lo - Armaan Malik 320Kbps.mp3",
+      "thumbnail": "./Assets/Thumbnails/MujhkoBarsaat.png"
+    },
+    {
+      "name": "Sawan Aaya Hai",
+      "singer": "Arijit Singh",
+      "file": "./Assets/Songs/Mohabbat Barsa Dena Tu Sawan Aaya Hai(PagalWorld).mp3",
+      "thumbnail": "./Assets/Thumbnails/SawanAayaHai.png"
+    },
+    {
+      "name": "Meri Aashiqui",
+      "singer": "Jubin Nautiyal",
+      "file": "./Assets/Songs/Meri Aashiqui - Jubin Nautiyal.mp3",
+      "thumbnail": "./Assets/Thumbnails/MeriAashiqui.png"
+    },
+    {
+      "name": "",
+      "singer": "",
+      "file": "./Assets/Songs/",
+      "thumbnail": "./Assets/Thumbnails"
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minus Player</title>
+    <style>
+      /* Body styling */
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          rgb(255, 255, 255),
+          rgb(0, 0, 0),
+          #ff00bf
+        );
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Player container */
+      .player-container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(255, 0, 234, 0.5);
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+        backdrop-filter: blur(10px);
+        border: 2px solid white;
+      }
+
+      /* Song thumbnail */
+      #song-thumbnail {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+        border: 3px solid rgba(255, 255, 255, 0.571);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Song details */
+      .song-details h2 {
+        margin: 10px 0 5px;
+        font-size: 24px;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      .song-details p {
+        margin: 0;
+        font-size: 18px;
+        opacity: 0.9;
+      }
+
+      /* Progress bar */
+      .progress-bar {
+        border: 1px solid rgb(86, 0, 68);
+        margin: 20px 0;
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .progress-bar .progress {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, rgb(237, 12, 169), #fffdff);
+
+        transition: width 0.1s linear;
+      }
+
+      /* Controls */
+      .controls {
+        margin-top: 20px;
+      }
+
+      .controls button {
+        background: linear-gradient(90deg, rgb(198, 22, 22), #5f0e71);
+        border: none;
+        padding: 12px 20px;
+        font-size: 18px;
+        color: white;
+        border-radius: 25px;
+        cursor: pointer;
+        margin: 5px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .controls button:hover {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      }
+
+      /* Song list */
+      .song-list {
+        margin-top: 20px;
+      }
+
+      #song-list-btn {
+        background: linear-gradient(90deg, #92007a, #230014);
+        color: white;
+        padding: 6px 12px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      #song-list-btn:hover {
+        box-shadow: 0 0 20px rgba(255, 0, 166, 0.8);
+        background: linear-gradient(90deg, #000428, #004e92);
+        transform: scale(1.05);
+      }
+
+      .song-list ul {
+        justify-items: left;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        overflow-y: auto; /* Enable vertical scroll */
+        max-height: 180px; /* Ensure we have enough space for 3 songs to be visible */
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .song-list ul li {
+        padding: 15px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .song-list ul li:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="player-container">
+      <div class="song-info">
+        <img
+          id="song-thumbnail"
+          src="song-thumbnail.jpg"
+          alt="Song Thumbnail"
+        />
+        <div class="song-details">
+          <h2 id="song-name">Song Name</h2>
+          <p id="song-singer">Song Singer</p>
+        </div>
+      </div>
+
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+
+      <div class="controls">
+        <button id="shuffle-btn">⇋</button>
+        <button id="backward-btn">◁</button>
+        <button id="play-pause-btn">▶</button>
+        <button id="forward-btn">▷</button>
+        <button id="loop-btn">↻</button>
+      </div>
+
+      <div class="song-list">
+        <button id="song-list-btn">Song Playlist</button>
+        <ul id="song-list"></ul>
+      </div>
+
+      <audio id="audio-player" src="song1.mp3"></audio>
+    </div>
+
+    <script>
+      const audioPlayer = document.getElementById("audio-player");
+      const playPauseBtn = document.getElementById("play-pause-btn");
+      const forwardBtn = document.getElementById("forward-btn");
+      const backwardBtn = document.getElementById("backward-btn");
+      const loopBtn = document.getElementById("loop-btn");
+      const shuffleBtn = document.getElementById("shuffle-btn");
+      const songName = document.getElementById("song-name");
+      const songSinger = document.getElementById("song-singer");
+      const songThumbnail = document.getElementById("song-thumbnail");
+      const progressBar = document.getElementById("progress-bar");
+      const progress = document.getElementById("progress");
+      const songListBtn = document.getElementById("song-list-btn");
+      const songListUl = document.getElementById("song-list");
+
+      let isPlaying = false;
+      let isLooping = false;
+      let isShuffle = false;
+      let songIndex = 0;
+
+      let songs = [];
+
+      fetch("songs.json")
+        .then((response) => response.json())
+        .then((data) => {
+          songs = data.songs;
+          loadSong(songIndex);
+          displaySongList();
+        })
+        .catch((error) => console.error("Error:", error));
+
+      function loadSong(index) {
+        const song = songs[index];
+        audioPlayer.src = song.file;
+        songName.textContent = song.name;
+        songSinger.textContent = song.singer;
+        songThumbnail.src = song.thumbnail;
+      }
+
+      function togglePlayPause() {
+        if (isPlaying) {
+          audioPlayer.pause();
+          playPauseBtn.textContent = "▶";
+        } else {
+          audioPlayer.play();
+          playPauseBtn.textContent = "❚❚";
+        }
+        isPlaying = !isPlaying;
+      }
+
+      function toggleLoop() {
+        isLooping = !isLooping;
+        audioPlayer.loop = isLooping;
+        loopBtn.style.opacity = isLooping ? "1" : "0.5";
+      }
+
+      function toggleShuffle() {
+        isShuffle = !isShuffle;
+        shuffleBtn.style.opacity = isShuffle ? "1" : "0.5";
+      }
+
+      function nextSong() {
+        if (isShuffle) {
+          songIndex = Math.floor(Math.random() * songs.length);
+        } else {
+          songIndex = (songIndex + 1) % songs.length;
+        }
+        loadSong(songIndex);
+        audioPlayer.play();
+      }
+
+      function previousSong() {
+        songIndex = (songIndex - 1 + songs.length) % songs.length;
+        loadSong(songIndex);
+        audioPlayer.play();
+      }
+
+      function updateProgressBar() {
+        const percentage =
+          (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progress.style.width = `${percentage}%`;
+      }
+
+      function setProgress(e) {
+        const width = progressBar.offsetWidth;
+        const clickX = e.offsetX;
+        const duration = audioPlayer.duration;
+        audioPlayer.currentTime = (clickX / width) * duration;
+      }
+
+      function displaySongList() {
+        songListUl.innerHTML = "";
+        songs.slice(0,).forEach((song, index) => {
+          const li = document.createElement("li");
+          li.textContent = song.name;
+          li.addEventListener("click", () => {
+            songIndex = index;
+            loadSong(songIndex);
+            audioPlayer.play();
+            isPlaying = true;
+            playPauseBtn.textContent = "❚❚";
+            songListUl.style.display = "none";
+          });
+          songListUl.appendChild(li);
+        });
+      }
+
+      songListBtn.addEventListener("click", () => {
+        songListUl.style.display =
+          songListUl.style.display === "block" ? "none" : "block";
+      });
+
+      playPauseBtn.addEventListener("click", togglePlayPause);
+      loopBtn.addEventListener("click", toggleLoop);
+      shuffleBtn.addEventListener("click", toggleShuffle);
+      forwardBtn.addEventListener("click", nextSong);
+      backwardBtn.addEventListener("click", previousSong);
+      audioPlayer.addEventListener("timeupdate", updateProgressBar);
+      progressBar.addEventListener("click", setProgress);
+    </script>
+  </body>
+</html>
