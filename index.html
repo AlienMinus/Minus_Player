@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="./Assets/Favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./Assets/Favicon.png" type="image/png" />
     <title>Rain Player</title>
     <style>
-      /* Body styling */
+      /* Global Styles */
       body {
         font-family: "Poppins", sans-serif;
         background: linear-gradient(
@@ -24,14 +24,13 @@
         height: 100vh;
       }
 
-      /* Player container */
       .player-container {
         background: rgba(255, 255, 255, 0.1);
         padding: 30px;
         border-radius: 20px;
         box-shadow: 0 0 30px rgba(255, 0, 234, 0.5);
         text-align: center;
-        width: 90%;
+        width: 100%;
         max-width: 500px;
         backdrop-filter: blur(10px);
         border: 2px solid white;
@@ -61,30 +60,40 @@
         opacity: 0.9;
       }
 
-      /* Progress bar */
-      .progress-bar {
-        border: 1px solid rgb(86, 0, 68);
-        margin: 20px 0;
-        width: 100%;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 5px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
+      #progress-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%; /* Ensure it takes the full width */
       }
 
-      .progress-bar .progress {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, rgb(237, 12, 169), #fffdff);
+      #current-time,
+      #duration {
+        font-size: 12px;
+        color: #fff;
+        margin: 0 5px;
+      }
 
-        transition: width 0.1s linear;
+      #progress-bar {
+        width: 100%;
+        height: 5px;
+        border: 1px solid rgb(243, 233, 233);
+        background-color: #ddd;
+        position: relative;
+      }
+
+      #progress {
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #4f0135, #e15d8f);
       }
 
       /* Controls */
       .controls {
         margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Adds space between buttons */
       }
 
       .controls button {
@@ -95,7 +104,6 @@
         color: white;
         border-radius: 25px;
         cursor: pointer;
-        margin: 5px;
         transition: all 0.3s ease;
         border: 1px solid rgba(255, 255, 255, 0.4);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -105,7 +113,7 @@
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
       }
 
-      /* Song list */
+      /* Song List */
       .song-list {
         margin-top: 20px;
       }
@@ -138,8 +146,8 @@
         display: none;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 15px;
-        overflow-y: auto; /* Enable vertical scroll */
-        max-height: 180px; /* Ensure we have enough space for 3 songs to be visible */
+        overflow-y: auto;
+        max-height: 180px;
         border: 1px solid rgba(255, 255, 255, 0.3);
       }
 
@@ -151,6 +159,60 @@
 
       .song-list ul li:hover {
         background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Media Queries for Responsiveness */
+      @media (max-width: 768px) {
+        #song-thumbnail {
+          width: 100px;
+          height: 100px;
+        }
+
+        .song-details h2 {
+          font-size: 20px;
+        }
+
+        .song-details p {
+          font-size: 16px;
+        }
+
+        .controls button {
+          padding: 10px 18px;
+          font-size: 16px;
+        }
+
+        #song-list-btn {
+          font-size: 16px;
+          padding: 5px 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .player-container {
+          padding: 15px;
+        }
+
+        .song-details h2 {
+          font-size: 18px;
+        }
+
+        .song-details p {
+          font-size: 14px;
+        }
+
+        .controls button {
+          padding: 8px 14px;
+          font-size: 14px;
+        }
+
+        #song-thumbnail {
+          width: 90px;
+          height: 90px;
+        }
+
+        .song-list ul {
+          max-height: 150px;
+        }
       }
     </style>
   </head>
@@ -168,8 +230,12 @@
         </div>
       </div>
 
-      <div class="progress-bar" id="progress-bar">
-        <div class="progress" id="progress"></div>
+      <div id="progress-container">
+        <span id="current-time">00:00</span>
+        <div id="progress-bar">
+          <div id="progress"></div>
+        </div>
+        <span id="duration">00:00</span>
       </div>
 
       <div class="controls">
@@ -202,14 +268,16 @@
       const progress = document.getElementById("progress");
       const songListBtn = document.getElementById("song-list-btn");
       const songListUl = document.getElementById("song-list");
+      const currentTimeDisplay = document.getElementById("current-time"); // Current time element
+      const durationDisplay = document.getElementById("duration"); // Duration element
 
       let isPlaying = false;
       let isLooping = false;
       let isShuffle = false;
       let songIndex = 0;
-
       let songs = [];
 
+      // Fetch songs data from JSON
       fetch("songs.json")
         .then((response) => response.json())
         .then((data) => {
@@ -219,14 +287,17 @@
         })
         .catch((error) => console.error("Error:", error));
 
+      // Load song and update UI
       function loadSong(index) {
         const song = songs[index];
         audioPlayer.src = song.file;
         songName.textContent = song.name;
         songSinger.textContent = song.singer;
         songThumbnail.src = song.thumbnail;
+        if (isPlaying) audioPlayer.play(); // Ensure the song plays if it was already playing
       }
 
+      // Toggle play/pause state
       function togglePlayPause() {
         if (isPlaying) {
           audioPlayer.pause();
@@ -238,17 +309,20 @@
         isPlaying = !isPlaying;
       }
 
+      // Toggle loop
       function toggleLoop() {
         isLooping = !isLooping;
         audioPlayer.loop = isLooping;
         loopBtn.style.opacity = isLooping ? "1" : "0.5";
       }
 
+      // Toggle shuffle
       function toggleShuffle() {
         isShuffle = !isShuffle;
         shuffleBtn.style.opacity = isShuffle ? "1" : "0.5";
       }
 
+      // Go to the next song
       function nextSong() {
         if (isShuffle) {
           songIndex = Math.floor(Math.random() * songs.length);
@@ -256,21 +330,44 @@
           songIndex = (songIndex + 1) % songs.length;
         }
         loadSong(songIndex);
-        audioPlayer.play();
+        if (isPlaying) audioPlayer.play(); // Ensure the song is played after loading
       }
 
+      // Go to the previous song
       function previousSong() {
         songIndex = (songIndex - 1 + songs.length) % songs.length;
         loadSong(songIndex);
-        audioPlayer.play();
+        if (isPlaying) audioPlayer.play(); // Ensure the song is played after loading
       }
 
+      // Update progress bar based on current time
       function updateProgressBar() {
-        const percentage =
-          (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progress.style.width = `${percentage}%`;
+        if (audioPlayer.duration) {
+          const percentage =
+            (audioPlayer.currentTime / audioPlayer.duration) * 100;
+          progress.style.width = `${percentage}%`;
+          updateTimeDisplay();
+        }
       }
 
+      // Update current time and duration display
+      function updateTimeDisplay() {
+        const currentTime = formatTime(audioPlayer.currentTime);
+        const duration = formatTime(audioPlayer.duration);
+        currentTimeDisplay.textContent = currentTime;
+        durationDisplay.textContent = duration;
+      }
+
+      // Format time in mm:ss
+      function formatTime(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes < 10 ? "0" : ""}${minutes}:${
+          seconds < 10 ? "0" : ""
+        }${seconds}`;
+      }
+
+      // Set progress based on click on the progress bar
       function setProgress(e) {
         const width = progressBar.offsetWidth;
         const clickX = e.offsetX;
@@ -278,8 +375,9 @@
         audioPlayer.currentTime = (clickX / width) * duration;
       }
 
+      // Display song list in a dropdown-style menu
       function displaySongList() {
-        songListUl.innerHTML = "";
+        songListUl.innerHTML = ""; // Clear existing list
         songs.slice(0,).forEach((song, index) => {
           const li = document.createElement("li");
           li.textContent = song.name;
@@ -288,25 +386,34 @@
             loadSong(songIndex);
             audioPlayer.play();
             isPlaying = true;
-            playPauseBtn.textContent = "❚❚";
-            songListUl.style.display = "none";
+            playPauseBtn.textContent = "❚❚"; // Update button text to "Pause"
+            songListUl.style.display = "none"; // Hide the song list after selection
           });
           songListUl.appendChild(li);
         });
       }
 
+      // Toggle song list visibility
       songListBtn.addEventListener("click", () => {
         songListUl.style.display =
-          songListUl.style.display === "block" ? "none" : "block";
+          songListUl.style.display === "block" ? "none" : "block"; // Toggle visibility
       });
 
+      // Event listeners for buttons
       playPauseBtn.addEventListener("click", togglePlayPause);
       loopBtn.addEventListener("click", toggleLoop);
       shuffleBtn.addEventListener("click", toggleShuffle);
       forwardBtn.addEventListener("click", nextSong);
       backwardBtn.addEventListener("click", previousSong);
+
+      // Update progress bar during playback
       audioPlayer.addEventListener("timeupdate", updateProgressBar);
+
+      // Handle progress bar clicks to change current time
       progressBar.addEventListener("click", setProgress);
+
+      // Play next song when the current song ends
+      audioPlayer.addEventListener("ended", nextSong);
     </script>
   </body>
 </html>
