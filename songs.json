@@ -13,12 +13,6 @@
       "thumbnail": "./Assets/Thumbnails/Aapke.png"
     },
     {
-      "name": "Baarishon Mein",
-      "singer": "Darshan Raval",
-      "file": ".Assets/Songs/_DarshanRavalDZ _ Baarishon Mein _ Malvika Sharma _ Official Video _ New Song 2022(MP3_320K).mp3",
-      "thumbnail": "./Assets/Thumbnails/Baarishon.png"
-    },
-    {
       "name": "Khairiyat",
       "singer": "Arijit Singh",
       "file": "./Assets/Songs/Khairiyat Sad - Chhichhore.mp3",
@@ -67,10 +61,16 @@
       "thumbnail": "./Assets/Thumbnails/MeriAashiqui.png"
     },
     {
-      "name": "Pyaar Tune Kya Kiya",
-      "singer": "Jubin Nautiyal",
-      "file": ".Assets/Songs/Pyaar Tune Kya Kiya - Jubin Nautiyal-(MastiMusic.Com).mp3",
-      "thumbnail": "./Assets/Thumbnails/PyarTune.png"
+      "name": "Baarishon Mein",
+      "singer": "Darshan Raval",
+      "file": ".Assets/Songs/BaarisonMein.mp3",
+      "thumbnail": "./Assets/Thumbnails/Baarishon.png"
+    },
+    {
+      "name": "Sunyataku Pachare Jebe",
+      "singer": "Babushan Mohanty",
+      "file": ".Assets/Songs/SUNYATAKU _ Sad Film Song I SUPER MICHHUA I _ Sidharth TV(MP3_320K).mp3",
+      "thumbnail": "./Assets/Thumbnails/Sunyata.png"
     }
   ]
 }
